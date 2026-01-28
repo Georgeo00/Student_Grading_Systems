@@ -1,0 +1,22 @@
+[
+  { "login": "user01", "password": "password01" },
+  { "login": "user02", "password": "password02" },
+  { "login": "user03", "password": "password03" },
+  { "login": "user04", "password": "password04" },
+  { "login": "user05", "password": "password05" },
+  { "login": "user06", "password": "password06" },
+  { "login": "user07", "password": "password07" },
+  { "login": "user08", "password": "password08" },
+  { "login": "user09", "password": "password09" },
+  { "login": "user10", "password": "password10" },
+  { "login": "user11", "password": "password11" },
+  { "login": "user12", "password": "password12" },
+  { "login": "user13", "password": "password13" },
+  { "login": "user14", "password": "password14" },
+  { "login": "user15", "password": "password15" },
+  { "login": "user16", "password": "password16" },
+  { "login": "user17", "password": "password17" },
+  { "login": "user18", "password": "password18" },
+  { "login": "user19", "password": "password19" },
+  { "login": "user20", "password": "password20" }
+]
