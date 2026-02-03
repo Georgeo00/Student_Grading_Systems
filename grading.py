@@ -74,20 +74,20 @@ def add_grade():
 
 # task 4 (Neetee)adding students to Database using input
 import json
-def load_students(filename):
+def load_students():
     try:
-        with open("grading_data.json", "r", encoding="utf-8") as f:
+        with open("grading_py.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return []
-def save_students(filename, students):
-    with open("grading_data.json", "w", encoding="utf-8") as f:
+def save_students(students):
+    with open("grading_py.json", "w", encoding="utf-8") as f:
         json.dump(students, f, indent=4)
 
 
 
 def add_student():
-    students = load_students("grading_data.json")
+    students = load_students("grading_py.json")
     name = input("Enter student name: ")
     age = input("Enter student age: ")
     grade = input("Enter student grade: ")
@@ -98,7 +98,7 @@ def add_student():
         "grade": grade    }
     students.append(student)
     next_id += 1
-    save_students("grading_data.json", students)
+    save_students("grading_py.json", students)
     print("Student added successfully!")
     
 
