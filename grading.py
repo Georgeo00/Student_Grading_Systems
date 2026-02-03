@@ -1,3 +1,8 @@
+#to do:
+#add role based login(student/admin)
+#add option to download the grades as pdf (y/n)
+#delete the pdf after 24 hours 
+#send an enquiry for missing subject test
 import json
 import os
 
