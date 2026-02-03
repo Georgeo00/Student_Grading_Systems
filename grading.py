@@ -65,9 +65,9 @@ def add_grade():
             f= open("grading_data.json","w")
             json.dump(grade_data,f,indent=4)
             f.close()
-            printf("grade added successfully")
+            print("grade added successfully")#use print instead of printf in python
         else:
-            printf("error,student not found")
+            print("error,student not found")
             #if login=true
                   #printf(login succ)
                  # add grade
