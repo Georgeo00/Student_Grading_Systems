@@ -1,3 +1,4 @@
+#task1 (Grigorijs)
 import json
 
 
@@ -22,10 +23,25 @@ else:
     print("Access denied")
 
 # while login_true:
-#task3
+#task 2 (Daksh)
+#task3(Dev)
+f= open("grading_data.json","r")
+grade_data=json.load(f)
+f.close()
+def add_grade()
+stuid=int(input("enter student id:"))
+marks=int(input("enter new grade:"))
+for student in grade_data["students":]
+if student ["id"]==stuid:
+    student["grades"]= student["grades"]+marks
+    f= open("grading_data.json","w")
+    json.dump(grade_data,f,indent=4)
+    f.close()
+    printf("grade added successfully")
+    else return:
+        printf("error,student not found")
 
-
-# task 4 adding students to Database using input
+# task 4 (Neete)adding students to Database using input
 students = []
 next_id = 1
 
@@ -42,6 +58,7 @@ def add_student(students):
     students.append(student)
     next_id += 1
     print("Student added successfully!")
+# task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB
     
 
     
