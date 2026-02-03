@@ -68,6 +68,9 @@ def add_grade():
             printf("grade added successfully")
         else:
             printf("error,student not found")
+            #if login=true
+                  #printf(login succ)
+                 # add grade
 
 # task 4 (Neete)adding students to Database using input
 students = []
