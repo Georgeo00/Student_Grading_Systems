@@ -24,6 +24,35 @@ else:
 
 # while login_true:
 #task 2 (Daksh)
+
+import json
+import os
+def load_students():
+    if os.path.exists("students.json"):
+        with open("students.json", "r") as file:
+            return json.load(file)
+    else:
+        return {}
+class StudentManager:
+
+    def __init__(self, data):
+        self.data = data
+
+    def student_exists(self, sid):
+        if sid in self.data:
+            print("❌ Student already exists in database.")
+            return True
+        else:
+            print("✅ Student not found. You can add this student.")
+            return False
+students = load_students()
+
+manager = StudentManager(students)
+
+student_id = input("Enter Student ID: ")
+
+manager.student_exists(student_id)
+
 #task3(Dev)
 f= open("grading_data.json","r")
 grade_data=json.load(f)
