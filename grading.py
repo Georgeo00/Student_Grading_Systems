@@ -1,8 +1,7 @@
-#task1 (Grigorijs)
 import json
 
 
-
+#task1 (Grigorijs)
 with open("login_data.json", "r", encoding="utf-8") as f:
     login_data = json.load(f)
 
@@ -28,18 +27,18 @@ else:
 f= open("grading_data.json","r")
 grade_data=json.load(f)
 f.close()
-def add_grade()
-stuid=int(input("enter student id:"))
-marks=int(input("enter new grade:"))
-for student in grade_data["students":]
-if student ["id"]==stuid:
-    student["grades"]= student["grades"]+marks
-    f= open("grading_data.json","w")
-    json.dump(grade_data,f,indent=4)
-    f.close()
-    printf("grade added successfully")
-    else return:
-        printf("error,student not found")
+def add_grade():
+    stuid=int(input("enter student id:"))
+    marks=int(input("enter new grade:"))
+    for student in grade_data["students"]:
+        if student ["id"]==stuid:
+            student["grades"]= student["grades"]+marks
+            f= open("grading_data.json","w")
+            json.dump(grade_data,f,indent=4)
+            f.close()
+            printf("grade added successfully")
+        else:
+            printf("error,student not found")
 
 # task 4 (Neete)adding students to Database using input
 students = []
