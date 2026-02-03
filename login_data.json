@@ -1,22 +1,36 @@
-[
-  { "login": "user01", "password": "password01" },
-  { "login": "user02", "password": "password02" },
-  { "login": "user03", "password": "password03" },
-  { "login": "user04", "password": "password04" },
-  { "login": "user05", "password": "password05" },
-  { "login": "user06", "password": "password06" },
-  { "login": "user07", "password": "password07" },
-  { "login": "user08", "password": "password08" },
-  { "login": "user09", "password": "password09" },
-  { "login": "user10", "password": "password10" },
-  { "login": "user11", "password": "password11" },
-  { "login": "user12", "password": "password12" },
-  { "login": "user13", "password": "password13" },
-  { "login": "user14", "password": "password14" },
-  { "login": "user15", "password": "password15" },
-  { "login": "user16", "password": "password16" },
-  { "login": "user17", "password": "password17" },
-  { "login": "user18", "password": "password18" },
-  { "login": "user19", "password": "password19" },
-  { "login": "user20", "password": "password20" }
-]
+{
+  "admins": [
+    { "id": 1, "username": "admin01", "password": "Admin@1001", "role": "admin" },
+    { "id": 2, "username": "admin02", "password": "Admin@1002", "role": "admin" },
+    { "id": 3, "username": "admin03", "password": "Admin@1003", "role": "admin" },
+    { "id": 4, "username": "admin04", "password": "Admin@1004", "role": "admin" },
+    { "id": 5, "username": "admin05", "password": "Admin@1005", "role": "admin" },
+    { "id": 6, "username": "admin06", "password": "Admin@1006", "role": "admin" },
+    { "id": 7, "username": "admin07", "password": "Admin@1007", "role": "admin" },
+    { "id": 8, "username": "admin08", "password": "Admin@1008", "role": "admin" },
+    { "id": 9, "username": "admin09", "password": "Admin@1009", "role": "admin" },
+    { "id": 10, "username": "admin10", "password": "Admin@1010", "role": "admin" }
+  ],
+  "students": [
+    { "id": 101, "username": "student01", "password": "Student@2001", "role": "student" },
+    { "id": 102, "username": "student02", "password": "Student@2002", "role": "student" },
+    { "id": 103, "username": "student03", "password": "Student@2003", "role": "student" },
+    { "id": 104, "username": "student04", "password": "Student@2004", "role": "student" },
+    { "id": 105, "username": "student05", "password": "Student@2005", "role": "student" },
+    { "id": 106, "username": "student06", "password": "Student@2006", "role": "student" },
+    { "id": 107, "username": "student07", "password": "Student@2007", "role": "student" },
+    { "id": 108, "username": "student08", "password": "Student@2008", "role": "student" },
+    { "id": 109, "username": "student09", "password": "Student@2009", "role": "student" },
+    { "id": 110, "username": "student10", "password": "Student@2010", "role": "student" },
+    { "id": 111, "username": "student11", "password": "Student@2011", "role": "student" },
+    { "id": 112, "username": "student12", "password": "Student@2012", "role": "student" },
+    { "id": 113, "username": "student13", "password": "Student@2013", "role": "student" },
+    { "id": 114, "username": "student14", "password": "Student@2014", "role": "student" },
+    { "id": 115, "username": "student15", "password": "Student@2015", "role": "student" },
+    { "id": 116, "username": "student16", "password": "Student@2016", "role": "student" },
+    { "id": 117, "username": "student17", "password": "Student@2017", "role": "student" },
+    { "id": 118, "username": "student18", "password": "Student@2018", "role": "student" },
+    { "id": 119, "username": "student19", "password": "Student@2019", "role": "student" },
+    { "id": 120, "username": "student20", "password": "Student@2020", "role": "student" }
+  ]
+}
