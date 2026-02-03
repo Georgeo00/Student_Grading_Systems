@@ -23,4 +23,23 @@ else:
 
 # while login_true:
 
+# adding students to Database using input
+students = []
+next_id = 1
 
+def add_student(students):
+    name = input("Enter student name: ")
+    age = input("Enter student age: ")
+    grade = input("Enter student grade: ")
+    student = {
+        "name": name,
+        "age": age,
+        "grade": grade
+    }
+    student["id"] = next_id
+    students.append(student)
+    next_id += 1
+    print("Student added successfully!")
+    
+
+    
