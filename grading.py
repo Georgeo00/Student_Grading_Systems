@@ -119,29 +119,6 @@ def user_role(username, password, users):
             
             return "teacher", teacher["role"]
 
-
-
-
-#task 2 (Daksh)
-
-class StudentManager:
-
-    def __init__(self, data):
-        self.data = data
-
-    def student_exists(self, sid):
-        if sid in self.data:
-            print("Student already exists in database.")
-            return True
-        else:
-            print("Student not found. You can add this student.")
-            return False
-
-#student_id = input("Enter Student ID: ")#could change so that it check for the name instead, because admin(teacher) will probably not know the id of a student (Greg)
-#manager = StudentManager(student_data)
-
-#manager.student_exists(student_id)
-
 #task3(Dev)
 def add_grade():
     stuid=int(input("enter student id:"))
@@ -160,23 +137,73 @@ def add_grade():
                  # add grade
 
 # task 4 (Neetee)adding students to Database using input
+import json
+
 def save_students(student_data):
     with open("grading_py.json", "w", encoding="utf-8") as f:
         json.dump(student_data, f, indent=4)
 
-def add_student():                              #add checking if student already exists (from daksh code)
-    name = input("Enter student name: ")
-    age = input("Enter student age: ")
-    grade = input("Enter student grade: ")     #not sure if how will it work with multiple grades
-    next_id = len(student_data) + 1
-    student = {
-        "name": name,
-        "age": age,
-        "grade": grade    }
-    student_data.append(student)
-    next_id += 1
-    save_students("grading_py.json", student_data) #why create save_students?
-    print("Student added successfully!")
+# task 2(Daksh) 
+class StudentManager:
+
+    def __init__(self):
+        self.data = {}
+
+    def student_exists_by_name(self, name):
+        for sid, student in self.data.items():
+            if student["name"].lower() == name.lower():
+                return sid
+        return None
+# Neetee's task continued
+    def add_student(self):
+        name = input("Enter student name: ")
+        age = int(input("Enter student age: "))
+
+        # prevent duplicate names
+        if self.student_exists_by_name(name):
+            print("Student already exists.")
+            return
+
+        grades = []
+        while True:
+            grade = input("Enter grade (or 'done' to finish): ")
+            if grade.lower() == "done":
+                break
+            grades.append(float(grade))
+
+        student_id = str(len(self.data) + 1)
+
+        self.data[student_id] = {
+            "name": name,
+            "age": age,
+            "grades": grades
+        }
+
+        save_students(self.data)
+        print("Student added successfully.")
+
+    def add_grade_by_name(self):
+        name = input("Enter student name: ")
+        sid = self.student_exists_by_name(name)
+
+        if not sid:
+            print("Student not found.")
+            return
+
+        grade = float(input("Enter new grade: "))
+        self.data[sid]["grades"].append(grade)
+
+        save_students(self.data)
+        print("Grade added successfully.")
+
+    def show_students(self):
+        for sid, student in self.data.items():
+            print(f"\nID: {sid}")
+            print(f"Name: {student['name']}")
+            print(f"Age: {student['age']}")
+            print(f"Grades: {student['grades']}")
+
+    
     
 
 
