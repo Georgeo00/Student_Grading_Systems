@@ -1,9 +1,10 @@
 #to do:
-#add role based login(student/admin) (DONE)
+#(DONE)add role based login(student/admin) 
 #refracture grading_data file so that it contains subjects
 #add option to download the grades as pdf (y/n)
 #delete the pdf after 24 hours 
 #send an enquiry for missing subject test
+#create checking grades function (task5))(Important)
 import json
 import os
 
