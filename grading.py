@@ -19,9 +19,10 @@ if os.path.exists("login_data.json"):
 
 if os.path.exists("grading_data.json"):
     with open("grading_data.json", "r") as file:
-        student_data = json.load(file)   
-with open("classes.json", "r") as f:
-    classes = json.load(f)
+        student_data = json.load(file)
+if os.path.exists("classes.json"):           
+    with open("classes.json", "r") as f:
+        classes = json.load(f)
 
 
 def download_all_students_report(data, output_file="all_students_report.pdf"):
@@ -113,6 +114,10 @@ def user_role(username, password, users):
     for student in users["students"]:
         if student["username"] == username and student["password"] == password:
             return "student"
+    for teacher in users["teachers"]:
+        if teacher["username"] == username and teacher["password"] == password:
+            
+            return "teacher", teacher["role"]
 
 
 
@@ -175,17 +180,25 @@ def add_student():                              #add checking if student already
     
 
 
-# task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB
+# task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB, will be used only by students, for admin and teacher will directly download pdf
     
 
+
+
+
+
+
+#THIS PART LAST!!!
 username_input = input("Enter username:")
 password_input = input("Enter password:")
+user, role = user_role(username_input, password_input, login_data)
 
 
 
 
 
-while user_role(username_input, password_input, login_data) == "admin":
+
+while user == "admin":
     print("admin login successful")
 
     action = input("choose action(add_students, add_grades, check_grades): ")
@@ -199,10 +212,15 @@ while user_role(username_input, password_input, login_data) == "admin":
 
 
 
-while user_role(username_input, password_input, login_data) == "user":
+while user == "user":
     print("user login successful")
 
     action = input("choose action(check_grades): ")
+
+
+while user == "teacher":
+    print (role," teacher login successful")
+
 
 
 
@@ -216,3 +234,6 @@ print("Access denied")
 
 #2️⃣ Download report card for a single student
 #download_single_student_report(classes, "Student01")
+
+# Download report for a specific subject
+#download_subject_report(classes, role)

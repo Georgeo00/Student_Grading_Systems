@@ -44,6 +44,47 @@ def download_all_students_report(data, output_file="all_students_report.pdf"):
     print(f"PDF saved as {output_file}")
 
 
+def download_subject_report(data, subject_name, output_file=None):
+
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, f"{subject_name} Report", ln=True, align="C")
+    pdf.ln(10)
+    
+    # Find the class
+    cls = next((c for c in data if c["class"].lower() == subject_name.lower()), None)
+    if not cls:
+        print(f"No class found with name '{subject_name}'")
+        return
+    
+    # Table header
+    pdf.set_font("Arial", "B", 12)
+    headers = ["Student Name"] + [g['date'] for g in cls["students"][0]["grades"]]
+    col_widths = [50] + [30] * (len(headers) - 1)
+    
+    for i, h in enumerate(headers):
+        pdf.cell(col_widths[i], 10, h, border=1, align="C")
+    pdf.ln()
+    
+    # Table rows
+    pdf.set_font("Arial", size=12)
+    for student in cls["students"]:
+        row = [student["name"]] + [g["status"] for g in student["grades"]]
+        for i, value in enumerate(row):
+            pdf.cell(col_widths[i], 10, value, border=1, align="C")
+        pdf.ln()
+    
+    if output_file is None:
+        output_file = f"{subject_name}_report.pdf"
+    
+    pdf.output(output_file)
+    print(f"PDF saved as {output_file}")
+
+
+
 def download_single_student_report(data, student_name, output_file=None):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
@@ -93,3 +134,6 @@ def download_single_student_report(data, student_name, output_file=None):
 
 #2️⃣ Download report card for a single student
 #download_single_student_report(classes, "Student01")
+
+#download report for a specific subject
+#download_subject_report(classes, role)

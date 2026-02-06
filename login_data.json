@@ -1,16 +1,15 @@
 {
   "admins": [
     { "id": 1, "username": "admin01", "password": "Admin@1001", "role": "admin" },
-    { "id": 2, "username": "admin02", "password": "Admin@1002", "role": "admin" },
-    { "id": 3, "username": "admin03", "password": "Admin@1003", "role": "admin" },
-    { "id": 4, "username": "admin04", "password": "Admin@1004", "role": "admin" },
-    { "id": 5, "username": "admin05", "password": "Admin@1005", "role": "admin" },
-    { "id": 6, "username": "admin06", "password": "Admin@1006", "role": "admin" },
-    { "id": 7, "username": "admin07", "password": "Admin@1007", "role": "admin" },
-    { "id": 8, "username": "admin08", "password": "Admin@1008", "role": "admin" },
-    { "id": 9, "username": "admin09", "password": "Admin@1009", "role": "admin" },
-    { "id": 10, "username": "admin10", "password": "Admin@1010", "role": "admin" }
+    { "id": 2, "username": "admin02", "password": "Admin@1002", "role": "admin" }
+
   ],
+  "teachers": [
+         { "id": 1001, "username": "Math", "password": "Math", "role": "Mathematics" },
+         { "id": 1002, "username": "Physics", "password": "Physics", "role": "Physics" },
+         { "id": 1003, "username": "Chemistry", "password": "Chemistry", "role": "Chemistry" },
+         { "id": 1004, "username": "English", "password": "English", "role": "English" }
+ ],
   "students": [
     { "id": 101, "username": "student01", "password": "Student@2001", "role": "student" },
     { "id": 102, "username": "student02", "password": "Student@2002", "role": "student" },
