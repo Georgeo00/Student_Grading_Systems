@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "class": "Mathematics",
+    "students": [
+      {
+        "name": "Student01",
+        "grades": [
+          { "date": "2025-02-01", "status": "95" },
+          { "date": "2025-02-15", "status": "99" },
+          { "date": "2025-03-01", "status": "n" }
+        ]
+      },
+      {
+        "name": "Student02",
+        "grades": [
+          { "date": "2025-02-01", "status": "95" },
+          { "date": "2025-02-15", "status": "60" },
+          { "date": "2025-03-01", "status": "85" }
+        ]
+      },
+      {
+        "name": "Student03",
+        "grades": [
+          { "date": "2025-02-01", "status": "79" },
+          { "date": "2025-02-15", "status": "88" },
+          { "date": "2025-03-01", "status": "82" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "class": "Physics",
+    "students": [
+      {
+        "name": "Student01",
+        "grades": [
+          { "date": "2025-02-01", "status": "74" },
+          { "date": "2025-02-15", "status": "91" },
+          { "date": "2025-03-01", "status": "n" }
+        ]
+      },
+      {
+        "name": "Student02",
+        "grades": [
+          { "date": "2025-02-01", "status": "88" },
+          { "date": "2025-02-15", "status": "52" },
+          { "date": "2025-03-01", "status": "97" }
+        ]
+      },
+      {
+        "name": "Student03",
+        "grades": [
+          { "date": "2025-02-01", "status": "69" },
+          { "date": "2025-02-15", "status": "84" },
+          { "date": "2025-03-01", "status": "76" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "class": "Chemistry",
+    "students": [
+      {
+        "name": "Student01",
+        "grades": [
+          { "date": "2025-02-01", "status": "81" },
+          { "date": "2025-02-15", "status": "66" },
+          { "date": "2025-03-01", "status": "92" }
+        ]
+      },
+      {
+        "name": "Student02",
+        "grades": [
+          { "date": "2025-02-01", "status": "n" },
+          { "date": "2025-02-15", "status": "77" },
+          { "date": "2025-03-01", "status": "83" }
+        ]
+      },
+      {
+        "name": "Student03",
+        "grades": [
+          { "date": "2025-02-01", "status": "90" },
+          { "date": "2025-02-15", "status": "73" },
+          { "date": "2025-03-01", "status": "68" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "class": "English",
+    "students": [
+      {
+        "name": "Student01",
+        "grades": [
+          { "date": "2025-02-01", "status": "87" },
+          { "date": "2025-02-15", "status": "70" },
+          { "date": "2025-03-01", "status": "78" }
+        ]
+      },
+      {
+        "name": "Student02",
+        "grades": [
+          { "date": "2025-02-01", "status": "62" },
+          { "date": "2025-02-15", "status": "85" },
+          { "date": "2025-03-01", "status": "91" }
+        ]
+      },
+      {
+        "name": "Student03",
+        "grades": [
+          { "date": "2025-02-01", "status": "75" },
+          { "date": "2025-02-15", "status": "n" },
+          { "date": "2025-03-01", "status": "88" }
+        ]
+      }
+    ]
+  }
+]
