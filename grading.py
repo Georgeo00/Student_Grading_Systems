@@ -5,6 +5,7 @@
 #delete the pdf after 24 hours 
 #send an enquiry for missing subject test
 #create checking grades function (task5))(Important)
+#change functions like add_grades/check grades and add student so that they change data in classes.json
 import json
 import os
 
