@@ -10,6 +10,8 @@ import json
 import os
 from fpdf import FPDF
 
+from test import download_subject_report
+
 
 
 #task1 (Grigorijs)
@@ -224,36 +226,59 @@ user, role = user_role(username_input, password_input, login_data)
 
 
 
+# continuing task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB, will be used only by students, for admin and teacher will directly download pdf
+if user == "student":
+            print("Student login successful")
+            while True:
+                action = input("Choose action (check_grades, exit): ")
 
-while user == "admin":
-    print("admin login successful")
+                if action == "check_grades":
+                    found = False
+                    for student in student_data["students"]:
+                        if student["username"] == username_input:
+                            print(f"Grades for {student['name']}:")
+                            for i ,grade in enumerate(student["grades"], start=1):
+                                print(f"Subject{i}: {grade}")
+                                download_single_student_report(classes, student["name"])
+                                print(f"Report card for {student['name']} downloaded successfully.")
+                            found = True
+                            break
+                        if not found:
+                            print("No grades found for the student.")   
+                elif action == "exit":
+                    break
+                else:
+                    print("Invalid action. Please try again.")
+                    
+elif user == "admin":
+                    
+                    print("Admin login successful")
+                    while True:
+                        action = input("Choose action (download_all_students_report, exit): ")
 
-    action = input("choose action(add_students, check_grades): ")
-    if action == "add_students":
-        add_student()
-    elif action == "add_grades":
-        add_grade()
-    elif action == "check_grades":
-#        check_grades()   still to do
-        print("in progress...")
+                        if action == "download_all_students_report":
+                            download_all_students_report(classes)
+                            print("All students report downloaded successfully.")
+                        elif action == "exit":
+                            break
+                        else:
+                            print("Invalid action. Please try again.")
 
+elif user == "teacher":
+                       print (f"{role} teacher login successful")
+                       while True:
+                            action = input("Choose action (download_subject_report, exit): ")
+                            if action == "download_subject_report":
+                                subject_name = input("Enter subject name to download report for: ")
+                                download_subject_report(classes, subject_name)
+                                
+                            elif action == "exit":
+                                 break
+                            else :
+                                print("Invalid action. Please try again.")
 
-
-while user == "user":
-    print("user login successful")
-
-    action = input("choose action(check_grades): ")
-
-
-while user == "teacher":
-    print (role," teacher login successful")
-
-
-
-
-
-    
-print("Access denied")
+else:
+    print("ACCESS DENIED. Invalid username or password.")
 
 
 # 1️⃣ Download all students report
