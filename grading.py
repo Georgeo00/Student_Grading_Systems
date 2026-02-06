@@ -201,7 +201,7 @@ user, role = user_role(username_input, password_input, login_data)
 while user == "admin":
     print("admin login successful")
 
-    action = input("choose action(add_students, add_grades, check_grades): ")
+    action = input("choose action(add_students, check_grades): ")
     if action == "add_students":
         add_student()
     elif action == "add_grades":

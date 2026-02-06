@@ -129,7 +129,7 @@ def download_single_student_report(data, student_name, output_file=None):
 
 # Example usage:
 
-# 1️⃣ Download all students report
+#1️⃣ Download all students report
 #download_all_students_report(classes)
 
 #2️⃣ Download report card for a single student
