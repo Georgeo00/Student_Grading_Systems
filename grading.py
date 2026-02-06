@@ -1,5 +1,6 @@
 #to do:
-#add role based login(student/admin)
+#add role based login(student/admin) (DONE)
+#refracture grading_data file so that it contains subjects
 #add option to download the grades as pdf (y/n)
 #delete the pdf after 24 hours 
 #send an enquiry for missing subject test
