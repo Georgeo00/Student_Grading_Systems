@@ -121,22 +121,42 @@ def user_role(username, password, users):
             
             return "teacher", teacher["role"]
 
-#task3(Dev)
-def add_grade():
-    stuid=int(input("enter student id:"))
-    marks=int(input("enter new grade:"))
-    for student in student_data["students"]:
-        if student ["id"]==stuid:
-            student["grades"]= student["grades"]+marks
-            f= open("grading_data.json","w")
-            json.dump(student_data,f,indent=4)
-            f.close()
-            print("grade added successfully")#use print instead of printf in python
-        else:
-            print("error,student not found")
-            #if login=true
-                  #printf(login succ)
-                 # add grade
+# Task 3 - dev
+
+def save_classes():
+
+    f=open("classes.json","w")
+    json.dump(classes,f,indent=4)
+    f.close()
+
+
+def add_grade_teacher(subject):
+
+    student_name=input("Enter student name: ")
+    date=input("Enter date: ")
+    grade=input("Enter grade (or n): ")
+
+    for cls in classes:
+        if cls["class"].lower()==subject.lower():
+            for student in cls["students"]:
+                if student["name"]==student_name:
+                    # Check if date already exists
+                    for g in student["grades"]:
+                        if g["date"]==date:
+                            g["status"]=grade
+                            save_classes()
+                            print("Grade Updated")
+                            return
+                    student["grades"].append({ # --->If date not found, add new
+                        "date": date,
+                        "status": grade
+                    })
+                    save_classes()
+                    print("Grade Added Successfully")
+                    return
+
+    print("Error: Student or Subject not found")
+
 
 # task 4 (Neetee)adding students to Database using input
 import json
