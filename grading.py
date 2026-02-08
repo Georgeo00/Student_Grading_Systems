@@ -142,7 +142,7 @@ def add_grade():
 import json
 
 def save_students(student_data):
-    with open("grading_py.json", "w", encoding="utf-8") as f:
+    with open("classes.json", "w", encoding="utf-8") as f:
         json.dump(student_data, f, indent=4)
 
 # task 2(Daksh) 
