@@ -9,6 +9,7 @@
 import json
 import os
 from fpdf import FPDF
+import time
 
 from test import download_subject_report
 
