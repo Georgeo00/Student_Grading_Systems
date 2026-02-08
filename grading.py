@@ -284,18 +284,31 @@ elif user == "admin":
                         else:
                             print("Invalid action. Please try again.")
 
-elif user == "teacher":
-                       print (f"{role} teacher login successful")
-                       while True:
-                            action = input("Choose action (download_subject_report, exit): ")
-                            if action == "download_subject_report":
-                                subject_name = input("Enter subject name to download report for: ")
-                                download_subject_report(classes, subject_name)
-                                
-                            elif action == "exit":
-                                 break
-                            else :
-                                print("Invalid action. Please try again.")
+elif user=="teacher":
+
+    print(f"{role} teacher login successful")
+
+    while True:
+
+        print("\n1. Add Grade")
+        print("2. Download Subject Report")
+        print("3. Exit")
+
+        action=input("Choose:")
+
+        if action=="1":
+            add_grade_teacher(role)
+
+        elif action=="2":
+            subject_name=input("Enter subject name: ")
+            download_subject_report(classes, subject_name)
+
+        elif action=="3":
+            break
+
+        else:
+            print("Invalid choice")
+
 
 else:
     print("ACCESS DENIED. Invalid username or password.")
