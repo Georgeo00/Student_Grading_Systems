@@ -173,12 +173,12 @@ def load_students():
         return {}
 
 def save_logins(login_data):
-    with open("login.json", "w", encoding="utf-8") as f:
+    with open("login_data.json", "w", encoding="utf-8") as f:
         json.dump(login_data, f, indent=4)
 
 def load_logins():
     try:
-        with open("login.json", "r", encoding="utf-8") as f:
+        with open("login_data.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
