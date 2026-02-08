@@ -159,6 +159,17 @@ def add_grade_teacher(subject):
                     return
 
     print("Error: Student or Subject not found")
+# Auto delete PDFs after 1 minute (demo purpose)
+
+def cleanup_pdfs():
+    now=time.time()
+    for file in os.listdir("."):
+        if file.endswith(".pdf"):
+            created_time=os.path.getmtime(file)
+            #change to 86400 for 24 hrs
+            if now-created_time>60:
+                os.remove(file)
+                print("Deleted old PDF:",file)
 
 
 # task 4 (Neetee)adding students to Database using input
@@ -273,6 +284,7 @@ def check_student_grades(username, classes):
     print("Student login successful")
 
     while True:
+        cleanup_pdfs()
 
         action = input("Choose (check_grades / exit): ")
 
@@ -327,7 +339,7 @@ elif user == "admin":
     print("Admin login successful")
 
     while True:
-
+        cleanup_pdfs()
         action = input("Choose (download / exit): ")
 
         if action == "download":
@@ -346,7 +358,7 @@ elif user == "teacher":
     print(f"{role} teacher login successful")
 
     while True:
-
+        cleanup_pdfs()
         print("\n1. Add Grade")
         print("2. Download Subject Report")
         print("3. Exit")
