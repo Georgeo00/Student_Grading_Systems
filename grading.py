@@ -108,17 +108,21 @@ def download_single_student_report(data, student_name, output_file=None):
 
 
 def user_role(username, password, users):
+
     for admin in users["admins"]:
         if admin["username"] == username and admin["password"] == password:
-            return "admin"
+            return "admin", None
 
     for student in users["students"]:
         if student["username"] == username and student["password"] == password:
-            return "student"
+            return "student", None
+
     for teacher in users["teachers"]:
         if teacher["username"] == username and teacher["password"] == password:
-            
             return "teacher", teacher["role"]
+
+    return None, None
+    
 
 # Task 3 - dev
 
@@ -256,93 +260,118 @@ class StudentManager:
 
 
 #THIS PART LAST!!!
-username_input = input("Enter username:")
-password_input = input("Enter password:")
-user, role = user_role(username_input, password_input, login_data)
+
 
 
 
 
 
 # continuing task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB, will be used only by students, for admin and teacher will directly download pdf
-def check_student_grades(username_input, classes):
-    print(f"{username_input} Student login successful") 
+
+def check_student_grades(username, classes):
+
+    print("Student login successful")
 
     while True:
-        action = input("Choose action (check_grades, exit): ")
+
+        action = input("Choose (check_grades / exit): ")
 
         if action == "check_grades":
+
             found = False
 
-            # loop through classes 
-            for cls in classes: 
-                 # loop through students in the class to find the student with the matching username       
-                    for student in cls["students"]:
-                        if student.get("username") == username_input:
-                            print(f"\nClass: {cls['class']}")
-                            print(f"Grades for {student['name']}:")
+            # Loop through all classes
+            for cls in classes:
 
-                            # loop through the grades 
+                # Loop through students in each class
+                for student in cls["students"]:
 
-                            for i ,g in enumerate(student["grades"], start=1):
-                                print(f"Subject{i} ({g['date']}): {g['status']}")
+                    # Match logged-in student
+                    if student["name"] == username:
 
-                                download_single_student_report(classes, student["name"])
-                                print(f"Report card for {student['name']} downloaded successfully.")
-
-                                found = True
-                                break
-
-                            if found:
-                                break
-                             
                         if not found:
-                            print("No grades found for the student.")  
-                            
-                        elif action == "exit":
-                         break
+                            print("\nYour Grades:")
+                            found = True
 
-                        else :
-                            print("Invalid action. Please try again.")
-        elif user == "admin":
+                        print("\nSubject:", cls["class"])
 
-            print("Admin login successful")
-            while True:
-                action = input("Choose action (download_all_students_report, exit): ")
+                        # Show grades
+                        for g in student["grades"]:
+                            print(f"{g['date']} -> {g['status']}")
 
-                if action == "download_all_students_report":
-                    download_all_students_report(classes)
-                    print("All students report downloaded successfully.")
+            if found:
+                # Download PDF after showing grades
+                download_single_student_report(classes, username)
+                print("Report downloaded")
 
-                elif action == "exit":
-                    break
-                else:
-                    print("Invalid action. Please try again.")
+            else:
+                print("No grades found")
 
-        elif user == "teacher":
-            print(f"{role} Teacher login successful")
-            while True:
+        elif action == "exit":
+            break
 
-                print("\n1. Add Grade")
-                print("2. Download Subject Report")
-                print("3. Exit")
-
-                action = input("Choose: ")
-
-                if action == "1":
-                    add_grade_teacher(role)
-                    print("Grade added successfully.")
-
-                elif action == "2":
-                    subject_name = input("Enter subject name: ")
-                    download_subject_report(classes, subject_name)
-
-                elif action == "3":
-                    break
-                else:
-                    print("Invalid action. Please try again.")
         else:
-            print("ACCESS DENIED.Invalid username or password.")
+            print("Invalid choice. Try again.")
+
+username_input = input("Enter username:")
+password_input = input("Enter password:")
+user, role = user_role(username_input, password_input, login_data)
+
+if user == "student":
+
+    check_student_grades(username_input, classes)
+
+
+elif user == "admin":
+
+    print("Admin login successful")
+
+    while True:
+
+        action = input("Choose (download / exit): ")
+
+        if action == "download":
+            download_all_students_report(classes)
+
+        elif action == "exit":
+            break
+
+        else:
+            print("Invalid choice")
+    # admin menu
+
+
+elif user == "teacher":
+
+    print(f"{role} teacher login successful")
+
+    while True:
+
+        print("\n1. Add Grade")
+        print("2. Download Subject Report")
+        print("3. Exit")
+
+        action = input("Choose: ")
+
+        if action == "1":
+            add_grade_teacher(role)
+
+        elif action == "2":
+            subject = input("Enter subject: ")
+            download_subject_report(classes, subject)
+
+        elif action == "3":
+            break
+
+        else:
+            print("Invalid choice")
+
+    # teacher menu
+
+
+else:
+
+    print("ACCESS DENIED")
 
 # 1️⃣ Download all students report
 #download_all_students_report(classes)
