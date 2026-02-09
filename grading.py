@@ -301,7 +301,7 @@ def check_student_grades(username, classes):
                 for student in cls["students"]:
 
                     # Match logged-in student
-                    if student["name"] == username:
+                    if student["name"].lower() == username.lower():
 
                         if not found:
                             print("\nYour Grades:")
