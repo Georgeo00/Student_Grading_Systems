@@ -11,10 +11,6 @@ import os
 import time
 from fpdf import FPDF
 
-
-from test import download_subject_report
-
-
 #task1 (Grigorijs)
 if os.path.exists("login_data.json"):
     with open("login_data.json", "r", encoding="utf-8") as f:
@@ -29,39 +25,99 @@ if os.path.exists("classes.json"):
 def download_all_students_report(data, output_file="all_students_report.pdf"):
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
-    
+
     pdf.add_page()
     pdf.set_font("Arial", "B", 16)
     pdf.cell(0, 10, "All Students Grading Report", ln=True, align="C")
     pdf.ln(10)
-    
+
     for cls in data:
         pdf.set_font("Arial", "B", 14)
         pdf.cell(0, 10, f"Class: {cls['class']}", ln=True)
         pdf.ln(5)
-        
-        # Prepare header row
-        headers = ["Student Name"] + [g['date'] for g in cls["students"][0]["grades"]]
-        col_widths = [40] + [30] * len(headers[1:])
-        
-        # Table header
+
+        # Collect all unique dates
+        all_dates = []
+        for student in cls["students"]:
+            for g in student["grades"]:
+                if g["date"] not in all_dates:
+                    all_dates.append(g["date"])
+
+        headers = ["Student Name"] + all_dates
+        col_widths = [40] + [30] * len(all_dates)
+
+        # Header
         pdf.set_font("Arial", "B", 12)
         for i, h in enumerate(headers):
-            pdf.cell(col_widths[i], 10, h, border=1, align="C")
+            pdf.cell(col_widths[i], 10, str(h), border=1, align="C")
         pdf.ln()
-        
-        # Table rows
+
+        # Rows
         pdf.set_font("Arial", size=12)
         for student in cls["students"]:
-            row = [student["name"]] + [g["status"] for g in student["grades"]]
+            grade_map = {g["date"]: g["status"] for g in student["grades"]}
+            row = [student["name"]] + [grade_map.get(date, "n") for date in all_dates]
+
             for i, value in enumerate(row):
-                pdf.cell(col_widths[i], 10, value, border=1, align="C")
+                pdf.cell(col_widths[i], 10, str(value), border=1, align="C")
             pdf.ln()
-        
-        pdf.ln(10)  # Space between classes
-    
+
+        pdf.ln(10)
+
     pdf.output(output_file)
     print(f"PDF saved as {output_file}")
+
+
+def download_subject_report(data, subject_name, output_file=None):
+
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, f"{subject_name} Report", ln=True, align="C")
+    pdf.ln(10)
+
+    # Find the class
+    cls = next((c for c in data if c["class"].lower() == subject_name.lower()), None)
+    if not cls:
+        print(f"No class found with name '{subject_name}'")
+        return
+
+    # Collect all unique dates from all students
+    all_dates = []
+    for student in cls["students"]:
+        for g in student["grades"]:
+            if g["date"] not in all_dates:
+                all_dates.append(g["date"])
+
+    # Table header
+    pdf.set_font("Arial", "B", 12)
+    headers = ["Student Name"] + all_dates
+    col_widths = [50] + [30] * len(all_dates)
+
+    for i, h in enumerate(headers):
+        pdf.cell(col_widths[i], 10, str(h), border=1, align="C")
+    pdf.ln()
+
+    # Table rows
+    pdf.set_font("Arial", size=12)
+    for student in cls["students"]:
+        # Map grades by date
+        grade_map = {g["date"]: g["status"] for g in student["grades"]}
+
+        row = [student["name"]] + [grade_map.get(date, "n") for date in all_dates]
+
+        for i, value in enumerate(row):
+            pdf.cell(col_widths[i], 10, str(value), border=1, align="C")
+        pdf.ln()
+
+    if output_file is None:
+        output_file = f"{subject_name}_report.pdf"
+
+    pdf.output(output_file)
+    print(f"PDF saved as {output_file}")
+
 
 
 def download_single_student_report(data, student_name, output_file=None):
@@ -93,8 +149,9 @@ def download_single_student_report(data, student_name, output_file=None):
         # Table rows
         pdf.set_font("Arial", size=12)
         for g in student["grades"]:
-            pdf.cell(col_widths[0], 10, g["date"], border=1, align="C")
-            pdf.cell(col_widths[1], 10, g["status"], border=1, align="C")
+            pdf.cell(col_widths[0], 10, str(g["date"]), border=1, align="C")
+            pdf.cell(col_widths[1], 10, str(g["status"]), border=1, align="C")
+
             pdf.ln()
         
         pdf.ln(10)
@@ -122,7 +179,40 @@ def user_role(username, password, users):
             return "teacher", teacher["role"]
 
     return None, None
-    
+
+def add_grade_teacher(subject):
+
+    date = input("Enter date of exam (YYYY-MM-DD): ").strip()
+
+    for cls in classes:
+        if cls["class"].lower() == subject.lower():
+
+            print(f"\nEntering grades for {cls['class']}")
+
+            for student in cls["students"]:
+                while True:
+                    grade = input(f"Enter grade for {student['name']} (0–100 or n): ").strip()
+                    if valid_grade(grade):
+                        break
+                    print("Invalid grade. Enter a number 0–100 or 'n'.")
+
+                # Check if date already exists
+                existing = next((g for g in student["grades"] if g["date"] == date), None)
+
+                if existing:
+                    existing["status"] = grade
+                else:
+                    student["grades"].append({
+                        "date": date,
+                        "status": grade
+                    })
+
+            save_classes()
+            print("Grades added successfully.")
+            return
+
+    print("Subject not found.")
+
 
 # Task 3 - dev
 
@@ -133,11 +223,15 @@ def save_classes():
     f.close()
 
 
-def add_grade_teacher(subject):
+def edit_grade_teacher(subject):
 
     student_name=input("Enter student name: ")
     date=input("Enter date: ")
-    grade=input("Enter grade (or n): ")
+    while True:
+        grade = input(f"Enter grade for {student['name']} (0–100 or n): ").strip()
+        if valid_grade(grade):
+            break
+        print("Invalid grade. Enter a number 0–100 or 'n'.")
 
     for cls in classes:
         if cls["class"].lower()==subject.lower():
@@ -186,6 +280,14 @@ def load_logins():
             return json.load(f)
     except FileNotFoundError:
         return {}
+    
+
+def valid_grade(g):
+    if g.lower() == "n":
+        return True
+    if g.isdigit() and 0 <= int(g) <= 100:
+        return True
+    return False
 
 
 def add_student_admin():
@@ -237,38 +339,6 @@ def add_student_admin():
     print("Login created:")
     print("Username:", username)
     print("Password:", password)
-
-
-    def add_grade_by_name(self):
-        name = input("Enter student name: ")
-        sid = self.student_exists_by_name(name)
-
-        if not sid:
-            print("Student not found.")
-            return
-
-        grade = float(input("Enter new grade: "))
-        self.data[sid]["grades"].append(grade)
-
-        save_students(self.data)
-        print("Grade added successfully.")
-
-    def show_students(self):
-        for sid, student in self.data.items():
-            print(f"\nID: {sid}")
-            print(f"Name: {student['name']}")
-            print(f"Age: {student['age']}")
-            print(f"Grades: {student['grades']}")
-
-    
-    
-
-
-# task 5 (Harshpreet) -> Checking grades. Outputting grades of a student from DB, will be used only by students, for admin and teacher will directly download pdf
-    
-
-
-
 
 
 
@@ -336,6 +406,7 @@ while True:
     if user == "student":
 
         check_student_grades(username_input, classes)
+        cleanup_pdfs()
 
 
     elif user == "admin":
@@ -348,6 +419,7 @@ while True:
 
             if action == "download":
                 download_all_students_report(classes)
+                cleanup_pdfs()
             elif action == "add":
                 add_student_admin()
 
@@ -365,20 +437,23 @@ while True:
 
         while True:
             cleanup_pdfs()
-            print("\n1. Add Grade")
-            print("2. Download Subject Report")
-            print("3. Exit")
+            print("\n1. Edit Grade")
+            print("2. Add Grade")
+            print("3. Download Subject Report")
+            print("4. Exit")
 
             action = input("Choose: ")
 
             if action == "1":
+                edit_grade_teacher(role)
+            if action == "2":
                 add_grade_teacher(role)
-
-            elif action == "2":
+            elif action == "3":
                 download_subject_report(classes, role)
+                cleanup_pdfs()
                 print("downloaded successfully")
 
-            elif action == "3":
+            elif action == "4":
                 break
 
             else:
