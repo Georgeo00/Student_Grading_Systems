@@ -20,9 +20,7 @@ if os.path.exists("login_data.json"):
     with open("login_data.json", "r", encoding="utf-8") as f:
         login_data = json.load(f)
 
-if os.path.exists("grading_data.json"):
-    with open("grading_data.json", "r") as file:
-        student_data = json.load(file)
+
 if os.path.exists("classes.json"):           
     with open("classes.json", "r") as f:
         classes = json.load(f)
@@ -175,7 +173,6 @@ def cleanup_pdfs():
 
 
 # task 4 (Neetee)adding students to Database using input
-import json
 
 def save_students(student_data):
     with open("classes.json", "w", encoding="utf-8") as f:
@@ -200,44 +197,56 @@ def load_logins():
         return {}
 
 
-# task 2(Daksh) 
-class StudentManager:
+def add_student_admin():
+    name = input("Enter student name: ").strip()
 
-    def __init__(self):
-        self.data = {}
-
-    def student_exists_by_name(self, name):
-        for sid, student in self.data.items():
+    # Check if student already exists in any class
+    for cls in classes:
+        for student in cls["students"]:
             if student["name"].lower() == name.lower():
-                return sid
-        return None
-# Neetee's task continued
-    def add_student(self):
-        name = input("Enter student name: ")
-        age = int(input("Enter student age: "))
+                print("Student already exists.")
+                return
 
-        # prevent duplicate names
-        if self.student_exists_by_name(name):
-            print("Student already exists.")
-            return
+    # ---- Create login automatically ----
+    login_data_local = load_logins()
 
-        grades = []
-        while True:
-            grade = input("Enter grade (or 'done' to finish): ")
-            if grade.lower() == "done":
-                break
-            grades.append(float(grade))
+    next_id = max([s["id"] for s in login_data_local["students"]], default=100) + 1
+    username = name.lower()
+    password = f"Student@{2000 + next_id}"
 
-        student_id = str(len(self.data) + 1)
+    login_data_local["students"].append({
+        "id": next_id,
+        "username": username,
+        "password": password,
+        "role": "student"
+    })
 
-        self.data[student_id] = {
+    save_logins(login_data_local)
+
+    # ---- Add student to all classes ----
+    for cls in classes:
+
+        # Copy all exam dates from first student in that class
+        if cls["students"]:
+            template_grades = [
+                {"date": g["date"], "status": "n"}
+                for g in cls["students"][0]["grades"]
+            ]
+        else:
+            template_grades = []
+
+        cls["students"].append({
             "name": name,
-            "age": age,
-            "grades": grades
-        }
+            "grades": template_grades
+        })
 
-        save_students(self.data)
-        print("Student added successfully.")
+    save_classes()
+
+    print("Student added successfully.")
+    print("Login created:")
+    print("Username:", username)
+    print("Password:", password)
+
 
     def add_grade_by_name(self):
         name = input("Enter student name: ")
@@ -288,7 +297,7 @@ def check_student_grades(username, classes):
     while True:
         cleanup_pdfs()
 
-        action = input("Choose (check_grades / exit): ")
+        action = input("Choose (check grades (check) / exit (exit)): ")
 
         if action == "check_grades":
 
@@ -314,9 +323,11 @@ def check_student_grades(username, classes):
                             print(f"{g['date']} -> {g['status']}")
 
             if found:
-                # Download PDF after showing grades
-                download_single_student_report(classes, username)
-                print("Report downloaded")
+                answer = input("download as pdf?(y/n)")
+                if answer == "y":
+                    # Download PDF after showing grades
+                    download_single_student_report(classes, username)
+                    print("Report downloaded")
 
             else:
                 print("No grades found")
@@ -326,66 +337,68 @@ def check_student_grades(username, classes):
 
         else:
             print("Invalid choice. Try again.")
+while True:
+    username_input = input("Enter username:")
+    password_input = input("Enter password:")
+    user, role = user_role(username_input, password_input, login_data)
 
-username_input = input("Enter username:")
-password_input = input("Enter password:")
-user, role = user_role(username_input, password_input, login_data)
+    if user == "student":
 
-if user == "student":
-
-    check_student_grades(username_input, classes)
+        check_student_grades(username_input, classes)
 
 
-elif user == "admin":
+    elif user == "admin":
 
-    print("Admin login successful")
+        print("Admin login successful")
 
-    while True:
-        cleanup_pdfs()
-        action = input("Choose (download / exit): ")
+        while True:
+            cleanup_pdfs()
+            action = input("Choose (download student report (download) / add student (add) / exit (exit)): ")
 
-        if action == "download":
-            download_all_students_report(classes)
+            if action == "download":
+                download_all_students_report(classes)
+            elif action == "add":
+                add_student_admin()
 
-        elif action == "exit":
-            break
+            elif action == "exit":
+                break
 
-        else:
-            print("Invalid choice")
+            else:
+                print("Invalid choice")
     # admin menu
 
 
-elif user == "teacher":
+    elif user == "teacher":
 
-    print(f"{role} teacher login successful")
+        print(f"{role} teacher login successful")
 
-    while True:
-        cleanup_pdfs()
-        print("\n1. Add Grade")
-        print("2. Download Subject Report")
-        print("3. Exit")
+        while True:
+            cleanup_pdfs()
+            print("\n1. Add Grade")
+            print("2. Download Subject Report")
+            print("3. Exit")
 
-        action = input("Choose: ")
+            action = input("Choose: ")
 
-        if action == "1":
-            add_grade_teacher(role)
+            if action == "1":
+                add_grade_teacher(role)
 
-        elif action == "2":
-            subject = input("Enter subject: ")
-            download_subject_report(classes, subject)
+            elif action == "2":
+                download_subject_report(classes, role)
+                print("downloaded successfully")
 
-        elif action == "3":
-            break
+            elif action == "3":
+                break
 
-        else:
-            print("Invalid choice")
+            else:
+                print("Invalid choice")
 
     # teacher menu
 
 
-else:
+    else:
 
-    print("ACCESS DENIED")
+        print("ACCESS DENIED")
 
 # 1️⃣ Download all students report
 #download_all_students_report(classes)
