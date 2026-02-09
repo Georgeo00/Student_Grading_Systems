@@ -174,16 +174,7 @@ def cleanup_pdfs():
 
 # task 4 (Neetee)adding students to Database using input
 
-def save_students(student_data):
-    with open("classes.json", "w", encoding="utf-8") as f:
-        json.dump(student_data, f, indent=4) 
 
-def load_students():
-    try:
-        with open("classes.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {}
 
 def save_logins(login_data):
     with open("login_data.json", "w", encoding="utf-8") as f:
