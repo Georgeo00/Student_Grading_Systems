@@ -8,8 +8,9 @@
 #change functions like add_grades/check grades and add student so that they change data in classes.json
 import json
 import os
-from fpdf import FPDF
 import time
+from fpdf import FPDF
+
 
 from test import download_subject_report
 
